@@ -1,0 +1,25 @@
+syntax ="proto3";
+package protocol;
+message meta{
+  string fileName=1;
+  int64 length=2;
+  int64 chunkSize=3;
+  int64 packageSize=4;
+}
+
+message fin{
+  string fileName=1;
+  int64 chunkId=2;
+  bool done=3;
+}
+
+message package{
+  int64 chunkId=1;
+  int64 blockId=2;
+  int64 length=3;
+  bytes data=4;
+}
+
+message hello{
+  string hostname=1;
+}
