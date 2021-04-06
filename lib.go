@@ -1,4 +1,4 @@
-package main
+package well_of_file
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-func Send(fileInput string,port int) {
+func Send(fileInput string, port int) {
 	address := fmt.Sprintf("%s:%d", config.BIND_ADDRESS, port)
 	addr, err := net.ResolveUDPAddr("udp", address)
 	if err != nil {
@@ -45,23 +45,23 @@ func Send(fileInput string,port int) {
 	}
 }
 
-func Receive(serverAddress string,port int,saveTo string){
+func Receive(serverAddress string, port int, saveTo string) {
 	address := fmt.Sprintf("%s:%d", serverAddress, port)
-	conn,err := net.Dial("udp",address)
+	conn, err := net.Dial("udp", address)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
 	defer conn.Close()
-	meta,err := stage.HandShakeClient(conn)
-	if err!=nil{
+	meta, err := stage.HandShakeClient(conn)
+	if err != nil {
 		println("Handshake failed!")
 		println(err.Error())
 		os.Exit(-1)
 	}
-	fmt.Printf("Succeed handshake, file name: %s\n",meta.FileName)
-	err = stage.Receive(conn,meta,saveTo)
-	if err!=nil{
+	fmt.Printf("Succeed handshake, file name: %s\n", meta.FileName)
+	err = stage.Receive(conn, meta, saveTo)
+	if err != nil {
 		println("Receive failed!")
 		println(err.Error())
 		os.Exit(-1)
