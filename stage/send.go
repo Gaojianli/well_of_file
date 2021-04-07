@@ -2,14 +2,14 @@ package stage
 
 import (
 	"bufio"
-	"github.com/Gaojianli/ltcode/codec"
-	"github.com/Gaojianli/ltcode/utils"
 	"encoding/base64"
 	"fmt"
-	"io"
-	"log"
+	"github.com/Gaojianli/ltcode/codec"
+	"github.com/Gaojianli/ltcode/utils"
 	"github.com/Gaojianli/well_of_file/config"
 	protocol "github.com/Gaojianli/well_of_file/protobuf/idl"
+	"io"
+	"log"
 	"math/rand"
 	"net"
 	"os"
@@ -69,9 +69,9 @@ func Send(conn *net.UDPConn, remote *net.UDPAddr, filepath string) error {
 				}()
 				isFirst = true
 			}
-			packStr,_ := pack.Marshal()
+			packStr, _ := pack.Marshal()
 			_, _ = conn.WriteToUDP(packStr, remote)
-			fmt.Printf("[Chunk %d]: Package %d sended...\n",chunkId,encodeRes[0].BlockCode)
+			fmt.Printf("[Chunk %d]: Package %d sended...\n", chunkId, encodeRes[0].BlockCode)
 			//time.Sleep(time.Second)
 		}
 		chunkId++

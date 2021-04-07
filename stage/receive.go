@@ -1,10 +1,10 @@
 package stage
 
 import (
-	"github.com/Gaojianli/ltcode/codec"
-	ltutils "github.com/Gaojianli/ltcode/utils"
 	"encoding/base64"
 	"fmt"
+	"github.com/Gaojianli/ltcode/codec"
+	ltutils "github.com/Gaojianli/ltcode/utils"
 	"github.com/Gaojianli/well_of_file/config"
 	protocol "github.com/Gaojianli/well_of_file/protobuf/idl"
 	"github.com/Gaojianli/well_of_file/utils"
@@ -22,7 +22,7 @@ func Receive(conn net.Conn, meta protocol.Meta, saveTo string) error {
 	buffer := make([]byte, config.PACKAGE_SIZE*1.4+50) // base64体积最多膨胀这么多
 	writeFileWg := sync.WaitGroup{}
 	isFin := false
-	for !isFin{
+	for !isFin {
 		count, _ := conn.Read(buffer)
 		pack := protocol.Package{}
 		if pack.Unmarshal(buffer[:count]) == nil {
@@ -35,8 +35,8 @@ func Receive(conn net.Conn, meta protocol.Meta, saveTo string) error {
 			if _, ok := codecMap[pack.ChunkId]; !ok {
 				c := codec.Codec{}
 				c.Init(
-					config.CHUNK_SZIE/config.PACKAGE_SIZE + 1,
-					ltutils.SolitonDistribution(config.CHUNK_SZIE/config.PACKAGE_SIZE + 1),
+					config.CHUNK_SZIE/config.PACKAGE_SIZE+1,
+					ltutils.SolitonDistribution(config.CHUNK_SZIE/config.PACKAGE_SIZE+1),
 				)
 				codecMap[pack.ChunkId] = chunkStatus{
 					decoder: c.GetDecoder(config.CHUNK_SZIE),
@@ -44,9 +44,9 @@ func Receive(conn net.Conn, meta protocol.Meta, saveTo string) error {
 				}
 			}
 			decoder, _ := codecMap[pack.ChunkId]
-			if decoder.done{
-				fmt.Printf("[Chunk %d]: Chunk %d already finished...\n",pack.ChunkId,pack.ChunkId)
-				go SendFin(pack.ChunkId,conn,meta.FileName)
+			if decoder.done {
+				fmt.Printf("[Chunk %d]: Chunk %d already finished...\n", pack.ChunkId, pack.ChunkId)
+				go SendFin(pack.ChunkId, conn, meta.FileName)
 				continue
 			}
 			result := decoder.decoder.Decode([]codec.LTBlock{{
@@ -54,10 +54,10 @@ func Receive(conn net.Conn, meta protocol.Meta, saveTo string) error {
 				Data:      rawData,
 			}})
 			if result == codec.DECODE_NEEDMORE {
-				fmt.Printf("[Chunk %d]: Package %d received, need more...\n",pack.ChunkId,pack.BlockId)
+				fmt.Printf("[Chunk %d]: Package %d received, need more...\n", pack.ChunkId, pack.BlockId)
 				continue
 			} else {
-				fmt.Printf("[Chunk %d]: Chunk %d finished!\n",pack.ChunkId,pack.ChunkId)
+				fmt.Printf("[Chunk %d]: Chunk %d finished!\n", pack.ChunkId, pack.ChunkId)
 				decoder.done = true
 				codecMap[pack.ChunkId] = decoder
 				writeFileWg.Add(1)
@@ -65,23 +65,23 @@ func Receive(conn net.Conn, meta protocol.Meta, saveTo string) error {
 					// write to cache
 					defer writeFileWg.Done()
 					recoverd, err := decoder.decoder.Recover()
-					if err!=nil{
-						fmt.Printf("Decode chunk %d failed.\n",pack.ChunkId)
+					if err != nil {
+						fmt.Printf("Decode chunk %d failed.\n", pack.ChunkId)
 						println(err.Error())
 						decoder.done = false
 						codecMap[pack.ChunkId] = decoder
 						return
 					}
-					err = utils.WriteToCache(recoverd,meta.FileName, int(pack.ChunkId), int(pack.Length))
-					if err!=nil{
-						fmt.Printf("Write chunk %d failed.\n",pack.ChunkId)
+					err = utils.WriteToCache(recoverd, meta.FileName, int(pack.ChunkId), int(pack.Length))
+					if err != nil {
+						fmt.Printf("Write chunk %d failed.\n", pack.ChunkId)
 						println(err.Error())
 						decoder.done = false
 						codecMap[pack.ChunkId] = decoder
 						return
 					}
-					SendFin(pack.ChunkId,conn,meta.FileName)
-					if pack.Length < meta.PackageSize{
+					SendFin(pack.ChunkId, conn, meta.FileName)
+					if pack.Length < meta.PackageSize {
 						println("[Info]: All chunks finished..")
 						isFin = true
 					}
@@ -90,7 +90,8 @@ func Receive(conn net.Conn, meta protocol.Meta, saveTo string) error {
 		}
 	}
 	writeFileWg.Wait()
-	return utils.RecoveryFromCache(meta.FileName,saveTo)
+	println("[Info]: Try to merge file...")
+	return utils.RecoveryFromCache(meta.FileName, saveTo)
 }
 
 func SendFin(chunkId int64, conn net.Conn, filename string) {

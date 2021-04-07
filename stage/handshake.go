@@ -1,9 +1,9 @@
 package stage
 
 import (
-	"github.com/tmthrgd/go-memset"
 	"github.com/Gaojianli/well_of_file/config"
 	protocol "github.com/Gaojianli/well_of_file/protobuf/idl"
+	"github.com/tmthrgd/go-memset"
 	"net"
 	"os"
 )
@@ -43,29 +43,29 @@ handshake:
 	return clientSock, nil
 }
 
-func HandShakeClient(conn  net.Conn) (protocol.Meta,error){
+func HandShakeClient(conn net.Conn) (protocol.Meta, error) {
 	meta := protocol.Meta{}
-	hostname,err :=os.Hostname()
-	if err!=nil{
-		return meta,err
+	hostname, err := os.Hostname()
+	if err != nil {
+		return meta, err
 	}
 	helloMsg := protocol.Hello{
 		Hostname: hostname,
 	}
 handshake:
-	helloStr,_ :=helloMsg.Marshal()
-	buffer := make([]byte,500)
-	_,_ = conn.Write(helloStr)
-	count,err:=conn.Read(buffer)
-	if err!=nil{
-		return meta,err
+	helloStr, _ := helloMsg.Marshal()
+	buffer := make([]byte, 500)
+	_, _ = conn.Write(helloStr)
+	count, err := conn.Read(buffer)
+	if err != nil {
+		return meta, err
 	}
 	err = meta.Unmarshal(buffer[:count])
-	if err!=nil{
+	if err != nil {
 		println("Failed to handshake, try again")
 		goto handshake
 	}
-	metaStr,_:=meta.Marshal()
+	metaStr, _ := meta.Marshal()
 	_, _ = conn.Write(metaStr)
-	return meta,nil
+	return meta, nil
 }
