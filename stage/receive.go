@@ -37,6 +37,7 @@ func Receive(conn net.Conn, meta protocol.Meta, saveTo string) error {
 				c.Init(
 					config.CHUNK_SZIE/config.PACKAGE_SIZE+1,
 					ltutils.SolitonDistribution(config.CHUNK_SZIE/config.PACKAGE_SIZE+1),
+					pack.Length,
 				)
 				codecMap[pack.ChunkId] = chunkStatus{
 					decoder: c.GetDecoder(config.CHUNK_SZIE),

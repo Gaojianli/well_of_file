@@ -3,6 +3,10 @@ code.byted.org/zhangyibo.114514/lt_code v0.0.0-20210402073837-00420a8b6e73/go.mo
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/Gaojianli/ltcode v0.0.0-20210406123920-4d603dd77ba6 h1:tAPfKVDvFaBNrVNgp+ZmNmqqIZxISchWEV8eMM3EWl0=
 github.com/Gaojianli/ltcode v0.0.0-20210406123920-4d603dd77ba6/go.mod h1:7jHrZdWDrhUfM1h4y8QwYeUJe4g435Qg6KL87z2iHvg=
+github.com/Gaojianli/ltcode v0.0.0-20210408035218-c132e2bbb850 h1:A+OwiajwomAMbrTTuZSoqcgxgzUH2PYzrIZS7WIbhKw=
+github.com/Gaojianli/ltcode v0.0.0-20210408035218-c132e2bbb850/go.mod h1:7jHrZdWDrhUfM1h4y8QwYeUJe4g435Qg6KL87z2iHvg=
+github.com/Gaojianli/ltcode v0.0.0-20210408035353-21fdb69007e6 h1:IOhGn+vQH1ybsp9syg+VqF/i+YPhivYCgP0UNmY35wA=
+github.com/Gaojianli/ltcode v0.0.0-20210408035353-21fdb69007e6/go.mod h1:7jHrZdWDrhUfM1h4y8QwYeUJe4g435Qg6KL87z2iHvg=
 github.com/golang/protobuf v1.5.0/go.mod h1:FsONVRAS9T7sI+LIUmWTfcYkHO4aIWwzhcaSAoJOfIk=
 github.com/golang/protobuf v1.5.2 h1:ROPKBNFfQgOUMifHyP+KYbvpjbdoFNs+aK7DXlji0Tw=
 github.com/golang/protobuf v1.5.2/go.mod h1:XVQd3VNwM+JqD3oG2Ue2ip4fOMUkwXdXDdiuN0vRsmY=

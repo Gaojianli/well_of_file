@@ -21,11 +21,12 @@ func Send(conn *net.UDPConn, remote *net.UDPAddr, filepath string) error {
 		log.Fatal(err)
 	}
 	defer fs.Close()
+	fileInfo, _ := fs.Stat()
 	r := bufio.NewReader(fs)
 	fileBuffer := make([]byte, config.CHUNK_SZIE)
 	eof := false
 	encoder := codec.Codec{}
-	encoder.Init(config.CHUNK_SZIE/config.PACKAGE_SIZE+1, utils.SolitonDistribution(config.CHUNK_SZIE/config.PACKAGE_SIZE+1))
+	encoder.Init(config.CHUNK_SZIE/config.PACKAGE_SIZE+1, utils.SolitonDistribution(config.CHUNK_SZIE/config.PACKAGE_SIZE+1), fileInfo.Size())
 	chunkId := 0
 	for {
 		if eof {
