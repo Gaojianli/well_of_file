@@ -45,7 +45,7 @@ func Send(fileInput string, port int) {
 	}
 }
 
-func Receive(serverAddress string, port int, saveTo string) {
+func Receive(serverAddress string, port int, saveTo string) string {
 	address := fmt.Sprintf("%s:%d", serverAddress, port)
 	conn, err := net.Dial("udp", address)
 	if err != nil {
@@ -66,4 +66,10 @@ func Receive(serverAddress string, port int, saveTo string) {
 		println(err.Error())
 		os.Exit(-1)
 	}
+	return meta.FileName
+}
+
+func SetPath(cachePath, cacheDir string) {
+	config.TEMP_PATH = cachePath
+	config.CACHE_DIR = cacheDir
 }
