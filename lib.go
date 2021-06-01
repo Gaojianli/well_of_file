@@ -1,4 +1,4 @@
-package well_of_file
+package main
 
 import (
 	"fmt"
